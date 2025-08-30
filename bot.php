@@ -1,6 +1,6 @@
 <?php
 // Token y URL del API
-$token = "8368397544:AAFQcS9a7SiHJ8wDzxWMPqs75CnaLL6aHtI";
+$token = "8371377874:AAHOPqXAbcUUgsCNX5m30dhIjTYP0v8iT98";
 $apiURL = "https://api.telegram.org/bot$token";
 
 // Archivo de log
