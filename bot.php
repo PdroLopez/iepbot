@@ -1,22 +1,40 @@
 <?php
-$token = '8368397544:AAFQcS9a7SiHJ8wDzxWMPqs75CnaLL6aHtI';
-$website = 'https://api.telegram.org/bot'.$token;
-$input = file_get_contents('php://input');
-$update = json_decode($input, TRUE);
-$chatId = $update['message']['chat']['id'];
-$message = $update['message']['text'];
-switch($message)
-{
-    case '/start':
-		$response = 'ddd';
-        sendMessage($chatId,$response);
-        break;
-    case 'como me ira':
-        $response ='bien po';
-        sendMessage($chatId,$response);
-        break;
-    default:
-        $response = 'no entendi jaja';
-        sendMessage($chatID,$response);
+// Token y URL del API
+$token = "8368397544:AAFQcS9a7SiHJ8wDzxWMPqs75CnaLL6aHtI";
+$apiURL = "https://api.telegram.org/bot$token";
+
+// Archivo de log
+$logFile = __DIR__ . "/log.txt";
+
+// Leer la entrada de Telegram
+$input = file_get_contents("php://input");
+file_put_contents($logFile, date("Y-m-d H:i:s") . "-" . $input . "\n", FILE_APPEND);
+
+// Decodificar JSON
+$update = json_decode($input, true);
+
+if (isset($update['message'])) {
+    $chatId = $update['message']['chat']['id'];
+    $message = $update['message']['text'];
+
+    // Respuestas básicas
+    switch($message) {
+        case "/start":
+            $text = "Hola 👋, soy tu bot!";
+            break;
+        case "como me ira":
+            $text = "Bien po 😎";
+            break;
+        default:
+            $text = "No entendí jaja 😅";
+            break;
+    }
+
+    // Enviar respuesta a Telegram
+    file_get_contents($apiURL."/sendMessage?chat_id=".$chatId."&text=".urlencode($text));
 }
+
+// Responder 200 OK siempre
+http_response_code(200);
+exit();
 ?>
